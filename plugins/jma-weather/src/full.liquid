@@ -1,0 +1,10 @@
+{% comment %} Standalone check of the transformed data. The dashboard plugin draws the real screen. {% endcomment %}
+<div class="layout layout--col layout--top layout--left">
+  <span class="title">{{ area }} {{ reported_at }}</span>
+  {% for day in days %}
+    <span class="description">{{ day.label }}（{{ day.dow }}）{{ day.text }} {{ day.temp_max }}/{{ day.temp_min }} {{ day.pop }}% {{ day.icon | json }}</span>
+  {% endfor %}
+  {% for day in week %}
+    <span class="label">{{ day.dow }} {{ day.code }} {{ day.temp_max }}/{{ day.temp_min }} {{ day.pop }}% {{ day.icon | json }}</span>
+  {% endfor %}
+</div>

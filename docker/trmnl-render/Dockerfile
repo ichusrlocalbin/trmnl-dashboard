@@ -12,6 +12,10 @@ RUN apt-get update \
   && apt-get install -y --no-install-recommends fonts-noto-cjk \
   && rm -rf /var/lib/apt/lists/*
 
+# Root CAs for networks that intercept TLS (see extra-ca/README.md). Empty in a clean checkout.
+COPY extra-ca/ /usr/local/share/ca-certificates/extra/
+RUN find /usr/local/share/ca-certificates/extra -type f ! -name '*.crt' -delete && update-ca-certificates
+
 COPY entrypoint.sh /usr/local/bin/trmnl-render-entrypoint
 RUN chmod +x /usr/local/bin/trmnl-render-entrypoint
 ENTRYPOINT ["/usr/local/bin/trmnl-render-entrypoint"]

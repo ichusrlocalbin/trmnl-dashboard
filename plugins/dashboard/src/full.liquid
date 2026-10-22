@@ -1,0 +1,54 @@
+{% comment %}
+  Portrait (480×800) dashboard. Tomorrow's weather is the largest element, to be read from across
+  the room; today, the events and the week follow below.
+{% endcomment %}
+{% assign weather = private_plugin_1.merge_variables %}
+{% assign events = google_calendar_1.merge_variables.events %}
+{% assign today = weather.days[0] %}
+{% assign tomorrow = weather.days[1] %}
+
+<div class="dash">
+  <div class="hero">
+    <span class="day">明日 {{ tomorrow.date | date: "%-d日" }}（{{ tomorrow.dow }}）</span>
+    {% render "weather_icon", icon: tomorrow.icon, size: 160 %}
+    <span class="temps"><span class="b">{{ tomorrow.temp_max | default: "-" }}°</span><span class="min"> / {{ tomorrow.temp_min | default: "-" }}°</span></span>
+    <span class="sub">降水 {{ tomorrow.pop | default: "-" }}%</span>
+    <span class="text">{{ tomorrow.text }}</span>
+  </div>
+
+  <div class="rule"></div>
+  <div class="today">
+    {% render "weather_icon", icon: today.icon, size: 64 %}
+    <div style="display: flex; flex-direction: column; flex: 1;">
+      <span class="t1"><span class="b">今日 {{ today.date | date: "%-d日" }}</span>　{% if today.temp_max %}{{ today.temp_max }}°{% endif %}{% if today.temp_min %} / {{ today.temp_min }}°{% endif %}　降水 {{ today.pop | default: "-" }}%</span>
+      <span class="t2">{{ today.text }}<span class="meta">気象庁 {{ weather.reported_at | date: "%-H時" }}発表</span></span>
+    </div>
+  </div>
+
+  <div class="rule"></div>
+  <div class="events">
+    {% for day in weather.days limit: 2 %}
+      <span class="h">{{ day.label }}の予定</span>
+      {% assign count = 0 %}
+      {% for event in events %}
+        {% assign start = event.start.dateTime | default: event.start.date %}
+        {% if start contains day.date %}
+          {% assign count = count | plus: 1 %}
+          {% if count <= 3 %}<span class="e"><span class="time">{% if event.start.dateTime %}{{ event.start.dateTime | slice: 11, 5 }}{% else %}終日{% endif %}</span>{{ event.summary }}</span>{% endif %}
+        {% endif %}
+      {% endfor %}
+      {% if count == 0 %}<span class="e">予定なし</span>{% elsif count > 3 %}<span class="e">　　　　他 {{ count | minus: 3 }} 件</span>{% endif %}
+    {% endfor %}
+  </div>
+
+  <div class="rule"></div>
+  <div class="week">
+    {% for day in weather.week offset: 1 limit: 5 %}
+      <div class="d">
+        <span class="dow">{{ day.dow }}</span>
+        {% render "weather_icon", icon: day.icon, size: 60 %}
+        <span class="tt">{{ day.temp_max | default: "-" }}/{{ day.temp_min | default: "-" }}</span>
+      </div>
+    {% endfor %}
+  </div>
+</div>

@@ -1,8 +1,14 @@
 #!/bin/sh
 # Renders a trmnlp plugin directory to PNG with the production-like renderer.
 #
-#   bin/trmnl-render <plugin-dir> [color-depth]   # color-depth: 1 (default) or 2
+#   bin/trmnl-render <plugin-dir> [color-depth] [orientation]
+#
+# color-depth is 1 (default) or 2. orientation is landscape (default, 800x480) or portrait (480x800).
 #
 # Output goes to <plugin-dir>/_build/*.png. See bin/trmnlp for the environment variables it passes.
 set -eu
-exec "$(dirname "$0")/trmnlp" "${1:?usage: bin/trmnl-render <plugin-dir> [color-depth]}" build --png --color-depth "${2:-1}"
+size="--width 800 --height 480"
+[ "${3:-landscape}" = portrait ] && size="--width 480 --height 800"
+# shellcheck disable=SC2086 # $size is a word list by design.
+exec "$(dirname "$0")/trmnlp" "${1:?usage: bin/trmnl-render <plugin-dir> [color-depth] [orientation]}" \
+  build --png --color-depth "${2:-1}" $size

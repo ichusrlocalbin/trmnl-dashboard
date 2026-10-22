@@ -1,0 +1,2 @@
+.cache/
+docker/trmnl-render/extra-ca/*.crt

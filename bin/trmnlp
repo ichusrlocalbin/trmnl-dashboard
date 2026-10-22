@@ -3,11 +3,18 @@
 #
 #   bin/trmnlp <plugin-dir> <trmnlp args...>   # e.g. bin/trmnlp plugins/foo push
 #
+# The whole repository is mounted, so merged_plugins can point at sibling plugins, and trmnlp's
+# cache (polled data, transform output) is kept in .cache/ between runs.
+#
 # Passes TRMNL_API_KEY and environment variables prefixed with TRMNLP_ into the container, so
 # .trmnlp.yml can read them as {{ env.TRMNLP_... }}.
 set -eu
 root=$(cd "$(dirname "$0")/.." && pwd)
 plugin=$(cd "${1:?usage: bin/trmnlp <plugin-dir> <trmnlp args...>}" && pwd)
+case $plugin in
+  "$root"/*) ;;
+  *) echo "plugin directory must be inside $root" >&2; exit 1 ;;
+esac
 shift
 image=trmnl-render
 
@@ -17,4 +24,4 @@ tty=
 [ -t 0 ] && tty=-it
 # shellcheck disable=SC2086 # $envs and $tty are word lists by design.
 exec docker run --rm $tty $(for name in $envs; do printf -- '-e %s ' "$name"; done) \
-  -v "$plugin:/plugin" -w /plugin "$image" "$@"
+  -e XDG_CACHE_HOME=/repo/.cache -v "$root:/repo" -w "/repo${plugin#"$root"}" "$image" "$@"

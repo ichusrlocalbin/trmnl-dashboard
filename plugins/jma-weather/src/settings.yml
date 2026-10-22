@@ -1,0 +1,13 @@
+---
+strategy: polling
+polling_verb: get
+polling_url: https://www.jma.go.jp/bosai/forecast/data/forecast/130000.json
+polling_headers: ''
+serverless_language: node
+no_screen_padding: 'no'
+dark_mode: 'no'
+static_data: ''
+framework_version: latest
+name: 気象庁 天気（東京）
+description: 気象庁の予報 JSON を取得して整形する。dashboard が Plugin Merge で参照する（プレイリストでは非表示）
+refresh_interval: 60
