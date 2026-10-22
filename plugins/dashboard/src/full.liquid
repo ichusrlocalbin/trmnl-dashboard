@@ -14,7 +14,7 @@
       <span class="meta">気象庁 {{ weather.reported_at | date: "%-H時" }}発表</span>
     </div>
     <div class="main">
-      {% render "weather_icon", icon: tomorrow.icon, size: 290 %}
+      {% render "weather_icon", icon: tomorrow.icon, size: 276 %}
       <div class="temps">
         <span class="k">最高</span>
         <span class="max">{{ tomorrow.temp_max | default: "-" }}<span class="deg">°</span></span>
