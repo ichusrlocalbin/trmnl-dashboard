@@ -4,7 +4,7 @@
 {% endcomment %}
 {% assign weather = private_plugin_1.merge_variables %}
 {% assign events = google_calendar_1.merge_variables.events %}
-{% assign max_events = 7 %}
+{% assign max_events = 9 %}
 {% assign tomorrow = weather.days[1] %}
 
 <div class="dash">
@@ -55,7 +55,7 @@
     {% for day in weather.week offset: 1 limit: 5 %}
       <div class="d">
         <span class="dow">{{ day.dow }}</span>
-        {% render "weather_icon", icon: day.icon, size: 60 %}
+        {% render "weather_icon", icon: day.icon, size: 84 %}
         <span class="tt">{{ day.temp_max | default: "-" }}/{{ day.temp_min | default: "-" }}</span>
       </div>
     {% endfor %}
