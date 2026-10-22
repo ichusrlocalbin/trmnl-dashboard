@@ -1,0 +1,18 @@
+{% assign settings = trmnl.plugin_settings.custom_fields_values %}
+{% assign font = settings.font | default: "biz" %}
+{% assign weight = settings.weight | default: "400" %}
+{% assign page = settings.page | default: "sizes" %}
+{% case font %}
+  {% when "noto" %}{% assign family = "'Noto Sans JP'" %}{% assign label = "Noto Sans JP" %}
+  {% when "dot" %}{% assign family = "'DotGothic16'" %}{% assign label = "DotGothic16" %}{% assign weight = "400" %}
+  {% when "framework" %}{% assign family = "'Inter Variable', 'Inter'" %}{% assign label = "TRMNL 標準" %}
+  {% else %}{% assign family = "'BIZ UDPGothic'" %}{% assign label = "BIZ UDPGothic" %}
+{% endcase %}
+{% comment %} fallbacks-ja.css keeps every fallback on Japanese glyph forms, never Noto Sans CJK SC. {% endcomment %}
+<link rel="stylesheet" href="https://trmnl.com/fonts/fallbacks-ja.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=DotGothic16&family=Noto+Sans+JP:wght@400;700&display=block">
+<style>
+  .jp { font-family: {{ family }}, 'Inter Variable', 'Inter', sans-serif; font-weight: {{ weight }}; color: #000; }
+  .jp .b { font-weight: 700; }
+  .meta { position: absolute; right: 12px; bottom: 6px; font: 13px 'Inter', sans-serif; }
+</style>

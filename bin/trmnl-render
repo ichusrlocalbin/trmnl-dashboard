@@ -3,17 +3,6 @@
 #
 #   bin/trmnl-render <plugin-dir> [color-depth]   # color-depth: 1 (default) or 2
 #
-# Output goes to <plugin-dir>/_build/*.png. Environment variables prefixed with TRMNLP_ are passed
-# into the container, so .trmnlp.yml can read them as {{ env.TRMNLP_... }}.
+# Output goes to <plugin-dir>/_build/*.png. See bin/trmnlp for the environment variables it passes.
 set -eu
-root=$(cd "$(dirname "$0")/.." && pwd)
-plugin=$(cd "${1:?usage: bin/trmnl-render <plugin-dir> [color-depth]}" && pwd)
-depth=${2:-1}
-image=trmnl-render
-
-docker build -q -t "$image" "$root/docker/trmnl-render" >/dev/null
-set --
-for name in $(env | sed -n 's/^\(TRMNLP_[A-Za-z0-9_]*\)=.*/\1/p'); do
-  set -- "$@" -e "$name"
-done
-exec docker run --rm "$@" -v "$plugin:/plugin" -w /plugin "$image" build --png --color-depth "$depth"
+exec "$(dirname "$0")/trmnlp" "${1:?usage: bin/trmnl-render <plugin-dir> [color-depth]}" build --png --color-depth "${2:-1}"

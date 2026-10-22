@@ -1,0 +1,15 @@
+# TRMNLP configuration
+# {{ env.VARIABLE }} interpolation is available here
+---
+watch:
+  - .trmnlp.yml
+  - src
+
+# Local preview values. On TRMNL these are chosen in the plugin's settings form.
+custom_fields:
+  font: "{{ env.TRMNLP_FONT }}"
+  weight: "{{ env.TRMNLP_WEIGHT }}"
+  page: "{{ env.TRMNLP_PAGE }}"
+
+variables:
+  trmnl: {}

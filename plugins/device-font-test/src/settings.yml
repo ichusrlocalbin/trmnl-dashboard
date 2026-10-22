@@ -1,0 +1,34 @@
+---
+strategy: static
+no_screen_padding: 'yes'
+dark_mode: 'no'
+static_data: ''
+framework_version: latest
+name: 日本語フォント実機比較
+description: 実機で日本語フォント・太さ・1-bit/2-bit を見比べるためのテスト画面
+refresh_interval: 1440
+custom_fields:
+- keyname: font
+  field_type: select
+  name: フォント
+  options:
+  - TRMNL 標準（日本語字形）: framework
+  - Noto Sans JP: noto
+  - BIZ UDPGothic: biz
+  - DotGothic16: dot
+  default: biz
+- keyname: weight
+  field_type: select
+  name: 太さ
+  description: DotGothic16 は標準のみ
+  options:
+  - 標準: '400'
+  - 太字: '700'
+  default: '400'
+- keyname: page
+  field_type: select
+  name: ページ
+  options:
+  - 文字サイズ比較: sizes
+  - ダッシュボード例: dashboard
+  default: sizes
