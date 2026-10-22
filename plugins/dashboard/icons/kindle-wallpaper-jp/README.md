@@ -12,10 +12,7 @@ File names are OpenWeatherMap condition codes. The dashboard inlines them as SVG
 | Symbol | File | Change |
 |---|---|---|
 | `wx-cloudy` | 500d.svg | only the cloud outline, without the rain |
-| `wx-rain` | 500d.svg | none |
-| `wx-heavy_rain` | 502d.svg | none |
 | `wx-thunder` | 211d.svg | none |
-| `wx-snow` | 500d.svg | the cloud outline with line snowflakes added (600d.svg's flakes are too small to see) |
-| `wx-heavy_snow` | 622d.svg | none |
 
-The sun is drawn in `shared.liquid` itself: 800d.svg is a filled disc, which is too heavy on the screen.
+The sun, the umbrella (rain) and the snowman (snow) are drawn in `shared.liquid` itself. 800d.svg is a
+filled disc, too heavy on the screen, and rain and snow follow JMA's umbrella and snowman.
