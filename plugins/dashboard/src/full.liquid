@@ -4,7 +4,7 @@
 {% endcomment %}
 {% assign weather = private_plugin_1.merge_variables %}
 {% assign events = google_calendar_1.merge_variables.events %}
-{% assign max_events = 9 %}
+{% assign max_events = 5 %}
 {% assign tomorrow = weather.days[1] %}
 
 <div class="dash">
@@ -28,7 +28,6 @@
     </div>
   </div>
 
-  <div class="rule"></div>
   <div class="events">
     <span class="h">予定:</span>
     {% comment %}
@@ -50,7 +49,6 @@
     {% if shown == 0 %}<span class="e">予定なし</span>{% endif %}
   </div>
 
-  <div class="rule"></div>
   <div class="week">
     {% for day in weather.week offset: 1 limit: 5 %}
       <div class="d">
