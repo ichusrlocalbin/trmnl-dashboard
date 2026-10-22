@@ -133,3 +133,7 @@ open plugins/dashboard/tests/snapshots/linux/portrait-og_png.png
 - 天気予報：[気象庁](https://www.jma.go.jp/)
 - フォント：[BIZ UDPGothic](https://fonts.google.com/specimen/BIZ+UDPGothic)（SIL Open Font License）
 - ローカルの描画：[trmnlp](https://github.com/usetrmnl/trmnlp)
+
+## ライセンス
+
+[MIT](LICENSE)。ただし、`plugins/dashboard/icons/kindle-wallpaper-jp/` のアイコンと、それを元にした `plugins/dashboard/src/shared.liquid` 内の雲・雷のアイコンは [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) です。
