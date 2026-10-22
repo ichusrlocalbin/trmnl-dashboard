@@ -1,0 +1,21 @@
+<link rel="stylesheet" href="https://trmnl.com/fonts/fallbacks-ja.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=DotGothic16&family=Noto+Sans+JP:wght@400;700&display=block">
+<style>
+  .sample { display: flex; flex-direction: column; gap: 4px; width: 100%; }
+  .row { display: flex; align-items: baseline; gap: 12px; white-space: nowrap; overflow: hidden; color: #000; }
+  .name { width: 150px; flex: none; font-size: 14px; font-family: 'Inter'; }
+</style>
+{% assign text = "千代田区 写真 誤差 直骨角 降水確率：終日" %}
+{% assign fonts = "Noto Sans JP|400,Noto Sans JP|700,BIZ UDPGothic|400,BIZ UDPGothic|700,DotGothic16|400" | split: "," %}
+<div class="layout layout--col layout--top layout--left">
+  <div class="sample">
+    {% for f in fonts %}
+      {% assign parts = f | split: "|" %}
+      {% for size in (16..24) %}{% if size == 16 or size == 20 or size == 24 %}
+        <div class="row" style="font-family: '{{ parts[0] }}'; font-weight: {{ parts[1] }}; font-size: {{ size }}px;">
+          <span class="name">{{ parts[0] }} {{ parts[1] }} {{ size }}px</span><span>{{ text }}</span>
+        </div>
+      {% endif %}{% endfor %}
+    {% endfor %}
+  </div>
+</div>

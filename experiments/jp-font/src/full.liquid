@@ -1,0 +1,16 @@
+{% assign font_fallback = trmnl.plugin_settings.custom_fields_values.font_fallback %}
+{% if font_fallback == "ja" %}
+  <link rel="stylesheet" href="https://trmnl.com/fonts/fallbacks-ja.css">
+{% endif %}
+<div class="layout layout--col gap--small">
+  <span class="value value--xlarge">23° 晴れ</span>
+  <span class="title title--large">10月22日（木）今日の予定</span>
+  <span class="title">10:00 定例ミーティング、骨董市「直角」</span>
+  <span class="description">晴れ 夕方から くもり。降水確率 20%、誤差・説明・写真・遍歴</span>
+  <span class="label">ラベル：終日 有給休暇（直骨角）</span>
+  <span class="label label--small">小さい文字：東京都 千代田区 直骨角誤</span>
+</div>
+<div class="title_bar">
+  <span class="title">日本語フォント確認</span>
+  <span class="instance">fallback: {{ font_fallback | default: "default" }}</span>
+</div>

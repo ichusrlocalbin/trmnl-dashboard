@@ -1,0 +1,12 @@
+# TRMNLP configuration
+---
+watch:
+  - .trmnlp.yml
+  - src
+
+# TRMNLP_FONT_FALLBACK=ja loads the framework's Japanese font fallbacks (fallbacks-ja.css).
+custom_fields:
+  font_fallback: "{{ env.TRMNLP_FONT_FALLBACK }}"
+
+variables:
+  trmnl: {}
