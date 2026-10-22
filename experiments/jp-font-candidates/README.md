@@ -21,10 +21,19 @@ bin/trmnl-render experiments/jp-font-candidates 2
 | BIZ UDPGothic 700 | 読める。見出しに使える。「確」はやや詰まる |
 | DotGothic16 | 16px のドットにぴったり合うので、くっきり表示される。ただし画数の多い字は略字のようになり、レトロな見た目になる |
 
-20px 以上なら、どのフォントも 1-bit で読めます。2-bit（`results/2bit.png`）ではさらになめらかになります。
+20px 以上なら、どのフォントも 1-bit で読めます。
+
+## 結果（2-bit、16px）
+
+`results/16px-2bit-zoom.png` の並び順は、1-bit の表と同じです。
+
+- 2-bit では輪郭がグレーでなめらかになるので、どのフォントも 1-bit より読みやすくなります。
+- フォントの違いより、**1-bit か 2-bit かの違いの方がずっと大きい**です。
+- 1-bit で黒くつぶれていた Noto Sans JP 700 も、2-bit なら読めます。
 
 ## 結論
 
-- 本文は **BIZ UDPGothic 400**、見出しは BIZ UDPGothic 700 を使う
-- 1-bit でも本文は 16px 以上にする。小さい補足は 2-bit にするか、表示しない
+- **2-bit で描画する**。OG は FW 1.6.0 以降で対応している
+- フォントは BIZ UDPGothic か Noto Sans JP にする。どちらの場合も `fallbacks-ja.css` を読み込む
+- 本文は 16px 以上にする
 - 実機で、Google Fonts の読み込みが描画に間に合うかを確認する
