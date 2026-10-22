@@ -4,9 +4,12 @@ watch:
   - .trmnlp.yml
   - src
 
-custom_fields: {}
+# The plugins chosen in the settings form on TRMNL (plugin_instance_select fields).
+custom_fields:
+  weather_source: private_plugin_1
+  calendar_source: google_calendar_1
 
-# Stand-ins for the plugins merged on TRMNL. The ids are placeholders until the real plugins exist.
+# Stand-ins for the plugins merged on TRMNL, keyed by placeholder ids.
 merged_plugins:
   private_plugin_1: ../jma-weather
   google_calendar_1: fixtures/google-calendar

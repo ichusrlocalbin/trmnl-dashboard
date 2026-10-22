@@ -1,9 +1,13 @@
 {% comment %}
   Portrait (480×800) dashboard, laid out like kindle-wallpaper-jp: tomorrow's weather fills the top
   half, large enough to read from across the room, with the events and the week below.
+
+  weather_source and calendar_source are the plugins picked in the settings form. trmnlp nests their
+  data under merge_variables, while TRMNL's docs show it at the top level, so both are accepted.
 {% endcomment %}
-{% assign weather = private_plugin_1.merge_variables %}
-{% assign events = google_calendar_1.merge_variables.events %}
+{% assign weather = weather_source.merge_variables | default: weather_source %}
+{% assign calendar = calendar_source.merge_variables | default: calendar_source %}
+{% assign events = calendar.events %}
 {% assign max_events = 5 %}
 {% assign tomorrow = weather.days[1] %}
 
