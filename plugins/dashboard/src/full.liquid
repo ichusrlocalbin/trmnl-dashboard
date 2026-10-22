@@ -1,27 +1,29 @@
 {% comment %}
-  Portrait (480×800) dashboard. Tomorrow's weather is the largest element, to be read from across
-  the room; today, the events and the week follow below.
+  Portrait (480×800) dashboard, laid out like kindle-wallpaper-jp: tomorrow's weather fills the top
+  half, large enough to read from across the room, with the events and the week below.
 {% endcomment %}
 {% assign weather = private_plugin_1.merge_variables %}
 {% assign events = google_calendar_1.merge_variables.events %}
-{% assign today = weather.days[0] %}
 {% assign tomorrow = weather.days[1] %}
 
 <div class="dash">
   <div class="hero">
-    <span class="day">明日 {{ tomorrow.date | date: "%-d日" }}（{{ tomorrow.dow }}）</span>
-    {% render "weather_icon", icon: tomorrow.icon, size: 160 %}
-    <span class="temps"><span class="b">{{ tomorrow.temp_max | default: "-" }}°</span><span class="min"> / {{ tomorrow.temp_min | default: "-" }}°</span></span>
-    <span class="sub">降水 {{ tomorrow.pop | default: "-" }}%</span>
-    <span class="text">{{ tomorrow.text }}</span>
-  </div>
-
-  <div class="rule"></div>
-  <div class="today">
-    {% render "weather_icon", icon: today.icon, size: 64 %}
-    <div style="display: flex; flex-direction: column; flex: 1;">
-      <span class="t1"><span class="b">今日 {{ today.date | date: "%-d日" }}</span>　{% if today.temp_max %}{{ today.temp_max }}°{% endif %}{% if today.temp_min %} / {{ today.temp_min }}°{% endif %}　降水 {{ today.pop | default: "-" }}%</span>
-      <span class="t2">{{ today.text }}<span class="meta">気象庁 {{ weather.reported_at | date: "%-H時" }}発表</span></span>
+    <div class="top">
+      <span class="day">明日 {{ tomorrow.date | date: "%-m/%-d" }}（{{ tomorrow.dow }}）</span>
+      <span class="meta">気象庁 {{ weather.reported_at | date: "%-H時" }}発表</span>
+    </div>
+    <div class="main">
+      {% render "weather_icon", icon: tomorrow.icon, size: 280 %}
+      <div class="temps">
+        <span class="k">最高</span>
+        <span class="max">{{ tomorrow.temp_max | default: "-" }}<span class="deg">°</span></span>
+        <span class="k">最低</span>
+        <span class="min">{{ tomorrow.temp_min | default: "-" }}<span class="deg">°</span></span>
+      </div>
+    </div>
+    <div class="bottom">
+      <span class="text">{{ tomorrow.text }}</span>
+      <span class="pop">降水 {{ tomorrow.pop | default: "-" }}%</span>
     </div>
   </div>
 
