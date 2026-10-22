@@ -43,7 +43,7 @@
       {% if start_date >= weather.days[0].date and shown < max_events %}
         {% assign shown = shown | plus: 1 %}
         {% assign dow = start_date | date: "%w" | plus: 0 %}
-        <span class="e"><span class="date">{{ start_date | date: "%-m/%-d" }}（{{ dows[dow] }}）</span><span class="time">{% if event.start.dateTime %}{{ event.start.dateTime | slice: 11, 5 }}{% endif %}</span><span class="title">{{ event.summary }}</span></span>
+        <span class="e"><span class="date">{{ start_date | date: "%-m/%-d" }}（{{ dows[dow] }}）</span><span class="time">{% if event.start.dateTime %}{{ event.start.dateTime | date: "%-H:%M" }}{% endif %}</span><span class="title">{{ event.summary }}</span></span>
       {% endif %}
     {% endfor %}
     {% if shown == 0 %}<span class="e">予定なし</span>{% endif %}
