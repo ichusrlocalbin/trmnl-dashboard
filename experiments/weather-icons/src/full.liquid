@@ -1,0 +1,14 @@
+{% comment %} Every icon composition from plugins/dashboard/src/shared.liquid, large and small. {% endcomment %}
+{% assign samples = '[{"base":"sunny"},{"base":"cloudy"},{"base":"rain"},{"base":"snow"},{"base":"sunny","change":"sometimes","to":"cloudy"},{"base":"cloudy","change":"sometimes","to":"rain"},{"base":"sunny","change":"later","to":"rain"},{"base":"rain","change":"later","to":"snow"}]' | parse_json %}
+{% assign names = "晴れ,くもり,雨,雪,晴れ時々くもり,くもり時々雨,晴れのち雨,雨のち雪" | split: "," %}
+<div class="dash" style="flex-direction: row; flex-wrap: wrap; align-content: flex-start; gap: 6px 0;">
+  {% for icon in samples %}
+    <div style="width: 50%; display: flex; flex-direction: column; align-items: center;">
+      <span style="font-size: 16px;">{{ names[forloop.index0] }}</span>
+      <div style="display: flex; align-items: flex-end; gap: 6px;">
+        {% render "weather_icon", icon: icon, size: 140 %}
+        {% render "weather_icon", icon: icon, size: 60 %}
+      </div>
+    </div>
+  {% endfor %}
+</div>
