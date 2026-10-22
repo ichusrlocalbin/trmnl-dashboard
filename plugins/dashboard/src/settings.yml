@@ -6,4 +6,4 @@ static_data: ''
 framework_version: latest
 name: 天気と予定
 description: 気象庁の天気（jma-weather）と Google カレンダーを 1 画面に描く。縦向き（480×800）用
-refresh_interval: 30
+refresh_interval: 60
