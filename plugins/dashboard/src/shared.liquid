@@ -2,6 +2,7 @@
   Shared by every view: fonts, styles, and the weather icons.
 
   Icons are line drawings, which stay clean on a 1-bit screen without the weight of solid black.
+  Like JMA's own icons, rain is an umbrella and snow a snowman; heavy rain and snow are filled in.
   weather_icon composes them from the { base, change, to } that jma-weather produces.
 {% endcomment %}
 <link rel="stylesheet" href="https://trmnl.com/fonts/fallbacks-ja.css">
@@ -15,7 +16,8 @@
   .dash .hero .day { font-size: 34px; font-weight: 700; }
   .dash .hero .meta { font-size: 14px; }
   .dash .hero .main { display: flex; align-items: center; justify-content: space-between; }
-  .dash .hero .temps { display: flex; flex-direction: column; align-items: flex-start; padding-right: 4px; }
+  .dash .hero .temps { display: flex; flex-direction: column; align-items: flex-start; text-align: left; font-variant-numeric: tabular-nums; padding-right: 4px; }
+  .dash .hero .temps > span { margin-left: -0.04em; }
   .dash .hero .k { font-size: 22px; line-height: 1; }
   .dash .hero .max { font-size: 100px; font-weight: 700; line-height: 1; }
   .dash .hero .min { font-size: 80px; line-height: 1; }
@@ -56,17 +58,44 @@
     <symbol id="wx-cloudy" viewBox="0 0 100 100">
       <use href="#wx-cloud-shape" x="0" y="-4" width="100" height="100"/>
     </symbol>
+    <symbol id="wx-umbrella-shape" viewBox="0 0 100 100">
+      <path d="M12 50 A38 36 0 0 1 88 50 A12.7 9 0 0 0 62.7 50 A12.7 9 0 0 0 37.3 50 A12.7 9 0 0 0 12 50 Z"
+            stroke="#000" stroke-width="5" stroke-linejoin="round"/>
+      <g fill="none" stroke="#000" stroke-width="5" stroke-linecap="round">
+        <line x1="50" y1="8" x2="50" y2="14"/>
+        <path d="M50 50 V80 A8 8 0 0 1 34 80"/>
+      </g>
+    </symbol>
     <symbol id="wx-rain" viewBox="0 0 100 100">
-      <use href="#wx-cloud-shape" x="0" y="-18" width="100" height="100"/>
-      <g stroke="#000" stroke-width="5" stroke-linecap="round">
-        <line x1="36" y1="68" x2="30" y2="86"/><line x1="52" y1="68" x2="46" y2="86"/><line x1="68" y1="68" x2="62" y2="86"/>
+      <use href="#wx-umbrella-shape" fill="#fff" x="0" y="0" width="100" height="100"/>
+    </symbol>
+    <symbol id="wx-heavy_rain" viewBox="0 0 100 100">
+      <use href="#wx-umbrella-shape" fill="#000" x="0" y="0" width="100" height="100"/>
+      <g stroke="#000" stroke-width="4" stroke-linecap="round">
+        <line x1="70" y1="64" x2="64" y2="80"/><line x1="84" y1="62" x2="78" y2="78"/><line x1="78" y1="82" x2="74" y2="93"/>
+      </g>
+    </symbol>
+    <symbol id="wx-snowman-shape" viewBox="0 0 100 100">
+      <g fill="none" stroke="#000" stroke-width="4.5" stroke-linecap="round">
+        <line x1="29" y1="62" x2="13" y2="50"/><line x1="71" y1="62" x2="87" y2="50"/>
+      </g>
+      <g stroke="#000" stroke-width="4.5" stroke-linejoin="round">
+        <circle cx="50" cy="69" r="23"/>
+        <circle cx="50" cy="36" r="14"/>
+        <path d="M38 25 L41 9 H59 L62 25 Z"/>
       </g>
     </symbol>
     <symbol id="wx-snow" viewBox="0 0 100 100">
+      <use href="#wx-snowman-shape" fill="#fff" x="0" y="0" width="100" height="100"/>
+      <g fill="#000"><circle cx="45" cy="35" r="2.8"/><circle cx="55" cy="35" r="2.8"/></g>
+    </symbol>
+    <symbol id="wx-heavy_snow" viewBox="0 0 100 100">
+      <use href="#wx-snowman-shape" fill="#000" x="0" y="0" width="100" height="100"/>
+      <g fill="#fff"><circle cx="45" cy="35" r="2.8"/><circle cx="55" cy="35" r="2.8"/></g>
+    </symbol>
+    <symbol id="wx-thunder" viewBox="0 0 100 100">
       <use href="#wx-cloud-shape" x="0" y="-18" width="100" height="100"/>
-      <g fill="none" stroke="#000" stroke-width="4.5" stroke-linecap="round">
-        <circle cx="32" cy="78" r="5"/><circle cx="50" cy="86" r="5"/><circle cx="68" cy="78" r="5"/>
-      </g>
+      <path d="M54 56 L40 78 H51 L44 95 L64 70 H53 L60 56 Z" fill="#fff" stroke="#000" stroke-width="4.5" stroke-linejoin="round"/>
     </symbol>
   </defs>
 </svg>
@@ -81,8 +110,8 @@
     {% elsif icon.change == "sometimes" %}
       {% comment %} The occasional weather is drawn smaller, so 時々 reads at a glance. {% endcomment %}
       <use href="#wx-{{ icon.base }}" x="0" y="18" width="62" height="62"/>
-      <line x1="64" y1="32" x2="64" y2="66" stroke="#000" stroke-width="4" stroke-linecap="round"/>
-      <use href="#wx-{{ icon.to }}" x="66" y="31" width="34" height="34"/>
+      <line x1="64" y1="34" x2="64" y2="76" stroke="#000" stroke-width="4" stroke-linecap="round"/>
+      <use href="#wx-{{ icon.to }}" x="66" y="46" width="34" height="34"/>
     {% else %}
       <use href="#wx-{{ icon.base }}" x="0" y="0" width="100" height="100"/>
     {% endif %}

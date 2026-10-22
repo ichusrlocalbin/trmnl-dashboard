@@ -1,6 +1,7 @@
 // Reshapes the JMA forecast JSON (polled as { data: [threeDay, weekly] }) into what the dashboard draws.
 //
-// Icons are { base, change, to }: base and to are sunny / cloudy / rain / snow, and change is
+// Icons are { base, change, to }: base and to are sunny / cloudy / rain / snow / thunder /
+// heavy_rain / heavy_snow, and change is
 // "later" (のち) or "sometimes" (時々・一時). The three-day forecast carries a sentence, which is
 // parsed directly. The weekly forecast carries only codes.
 
@@ -9,7 +10,7 @@ const CITY_CODE = '44132' // 東京（気温）
 const DOW = ['日', '月', '火', '水', '木', '金', '土']
 
 const WORDS = [
-  ['晴', 'sunny'], ['くもり', 'cloudy'], ['曇', 'cloudy'], ['雨', 'rain'], ['雪', 'snow'], ['雷', 'rain']
+  ['晴', 'sunny'], ['くもり', 'cloudy'], ['曇', 'cloudy'], ['雨', 'rain'], ['雪', 'snow'], ['雷', 'thunder']
 ]
 
 function kindsIn(text) {
@@ -25,8 +26,13 @@ function kindsIn(text) {
 
 // 「晴れ　夕方から　くもり」「晴れ　夜　くもり」 -> { base: sunny, change: later, to: cloudy }
 // Two kinds of weather mean a change: 時々/一時 is "sometimes", anything else (のち, から, 夜 ...) "later".
+// 「雨　で　雷　を　伴う」 draws as thunder, and 激しく / 大雨 / 大雪 / 暴風 as heavy rain or snow.
 function iconFromText(text) {
-  const [base = 'cloudy', to] = kindsIn(text)
+  let kinds = kindsIn(text)
+  if (kinds.includes('thunder')) kinds = kinds.filter((k) => k !== 'rain')
+  if (/激しく|大雨|強く降る|暴風雨/.test(text)) kinds = kinds.map((k) => (k === 'rain' ? 'heavy_rain' : k))
+  if (/大雪|暴風雪|風雪/.test(text)) kinds = kinds.map((k) => (k === 'snow' ? 'heavy_snow' : k))
+  const [base = 'cloudy', to] = kinds
   if (!to) return { base }
   return { base, change: /時々|一時/.test(text) ? 'sometimes' : 'later', to }
 }
@@ -36,8 +42,8 @@ function iconFromText(text) {
 // (朝夕, 暴風 ...) fall back to the main weather alone.
 const BASES = { 1: 'sunny', 2: 'cloudy', 3: 'rain', 4: 'snow' }
 const WET_SUBS = {
-  2: 'rain', 3: 'rain', 4: 'snow', 5: 'snow', 6: 'rain', 7: 'rain', 8: 'rain',
-  12: 'rain', 13: 'rain', 14: 'rain', 15: 'snow', 16: 'snow', 17: 'snow', 18: 'rain', 19: 'rain'
+  2: 'rain', 3: 'rain', 4: 'snow', 5: 'snow', 6: 'rain', 7: 'rain', 8: 'thunder',
+  12: 'rain', 13: 'rain', 14: 'rain', 15: 'snow', 16: 'snow', 17: 'snow', 18: 'rain', 19: 'thunder'
 }
 const SUBS = {
   sunny: { 1: 'cloudy', 10: 'cloudy', 11: 'cloudy', ...WET_SUBS },
@@ -46,7 +52,11 @@ const SUBS = {
   snow: { 1: 'sunny', 3: 'rain', 11: 'sunny', 13: 'cloudy', 14: 'rain' }
 }
 
+// Whole codes for severe weather (308 雨で暴風を伴う, 350 雨で雷を伴う, 405 大雪, 406 風雪強い, 407 暴風雪).
+const SEVERE = { 308: 'heavy_rain', 350: 'thunder', 405: 'heavy_snow', 406: 'heavy_snow', 407: 'heavy_snow' }
+
 function iconFromCode(code) {
+  if (SEVERE[code]) return { base: SEVERE[code] }
   const base = BASES[code[0]] || 'cloudy'
   const sub = Number(code.slice(1))
   const to = SUBS[base][sub]
