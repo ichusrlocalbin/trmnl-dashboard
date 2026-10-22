@@ -4,16 +4,17 @@
 {% endcomment %}
 {% assign weather = private_plugin_1.merge_variables %}
 {% assign events = google_calendar_1.merge_variables.events %}
+{% assign max_events = 7 %}
 {% assign tomorrow = weather.days[1] %}
 
 <div class="dash">
   <div class="hero">
     <div class="top">
-      <span class="day">明日 {{ tomorrow.date | date: "%-m/%-d" }}（{{ tomorrow.dow }}）</span>
+      <span class="day">{{ tomorrow.date | date: "%-m/%-d" }}（{{ tomorrow.dow }}）</span>
       <span class="meta">気象庁 {{ weather.reported_at | date: "%-H時" }}発表</span>
     </div>
     <div class="main">
-      {% render "weather_icon", icon: tomorrow.icon, size: 280 %}
+      {% render "weather_icon", icon: tomorrow.icon, size: 290 %}
       <div class="temps">
         <span class="k">最高</span>
         <span class="max">{{ tomorrow.temp_max | default: "-" }}<span class="deg">°</span></span>
@@ -29,18 +30,24 @@
 
   <div class="rule"></div>
   <div class="events">
-    {% for day in weather.days limit: 2 %}
-      <span class="h">{{ day.label }}の予定</span>
-      {% assign count = 0 %}
-      {% for event in events %}
-        {% assign start = event.start.dateTime | default: event.start.date %}
-        {% if start contains day.date %}
-          {% assign count = count | plus: 1 %}
-          {% if count <= 3 %}<span class="e"><span class="time">{% if event.start.dateTime %}{{ event.start.dateTime | slice: 11, 5 }}{% else %}終日{% endif %}</span>{{ event.summary }}</span>{% endif %}
-        {% endif %}
-      {% endfor %}
-      {% if count == 0 %}<span class="e">予定なし</span>{% elsif count > 3 %}<span class="e">　　　　他 {{ count | minus: 3 }} 件</span>{% endif %}
+    <span class="h">予定:</span>
+    {% comment %}
+      A date / time / title table without rules, like kindle-wallpaper-jp. All-day events leave the
+      time blank. Events are assumed to arrive sorted by start time, as the Google Calendar API
+      returns them.
+    {% endcomment %}
+    {% assign dows = "日,月,火,水,木,金,土" | split: "," %}
+    {% assign shown = 0 %}
+    {% for event in events %}
+      {% assign start = event.start.dateTime | default: event.start.date %}
+      {% assign start_date = start | slice: 0, 10 %}
+      {% if start_date >= weather.days[0].date and shown < max_events %}
+        {% assign shown = shown | plus: 1 %}
+        {% assign dow = start_date | date: "%w" | plus: 0 %}
+        <span class="e"><span class="date">{{ start_date | date: "%-m/%-d" }}（{{ dows[dow] }}）</span><span class="time">{% if event.start.dateTime %}{{ event.start.dateTime | slice: 11, 5 }}{% endif %}</span><span class="title">{{ event.summary }}</span></span>
+      {% endif %}
     {% endfor %}
+    {% if shown == 0 %}<span class="e">予定なし</span>{% endif %}
   </div>
 
   <div class="rule"></div>

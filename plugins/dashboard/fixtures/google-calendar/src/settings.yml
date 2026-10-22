@@ -1,16 +1,20 @@
 # Sample events for local previews of the dashboard, in the Google Calendar API v3 shape that
-# kindle-wallpaper-jp reads (summary, start.dateTime / start.date). The TRMNL Google Calendar
-# plugin's own data shape is not documented yet; replace this with a capture of the real data
-# (append ?data=true to the plugin page on TRMNL) once it is connected.
+# kindle-wallpaper-jp reads (summary, start.dateTime / start.date), sorted by start time. The TRMNL
+# Google Calendar plugin's own data shape is not documented yet; replace this with a capture of the
+# real data (append ?data=true to the plugin page on TRMNL) once it is connected.
 ---
 strategy: static
 name: Google Calendar (fixture)
 static_data: |
   {"events": [
+    {"summary": "過去の予定（表示されない）", "start": {"date": "2026-10-21"}},
     {"summary": "有給休暇", "start": {"date": "2026-10-22"}},
     {"summary": "定例ミーティング", "start": {"dateTime": "2026-10-22T10:00:00+09:00"}},
-    {"summary": "歯医者", "start": {"dateTime": "2026-10-22T14:30:00+09:00"}},
     {"summary": "燃えるゴミ", "start": {"date": "2026-10-23"}},
     {"summary": "顧客打ち合わせ", "start": {"dateTime": "2026-10-23T09:30:00+09:00"}},
-    {"summary": "英会話", "start": {"dateTime": "2026-10-23T19:00:00+09:00"}}
+    {"summary": "英会話", "start": {"dateTime": "2026-10-23T19:00:00+09:00"}},
+    {"summary": "Autodesk Fusion 360 ハンズオンワークショップ", "start": {"dateTime": "2026-10-24T16:30:00+09:00"}},
+    {"summary": "プロジェクト打ち上げ飲み会", "start": {"dateTime": "2026-10-27T19:00:00+09:00"}},
+    {"summary": "歯医者", "start": {"dateTime": "2026-10-29T14:30:00+09:00"}},
+    {"summary": "表示しきれない予定", "start": {"date": "2026-10-31"}}
   ]}
