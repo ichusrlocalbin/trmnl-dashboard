@@ -9,5 +9,5 @@ dark_mode: 'no'
 static_data: ''
 framework_version: latest
 name: 気象庁 天気（東京）
-description: 気象庁の予報 JSON を取得して整形する。dashboard が Plugin Merge で参照する（プレイリストでは非表示）
+description: 気象庁の天気予報（dashboard 用・非表示）
 refresh_interval: 60

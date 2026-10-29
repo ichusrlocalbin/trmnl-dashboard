@@ -5,5 +5,5 @@ dark_mode: 'no'
 static_data: ''
 framework_version: latest
 name: 天気アイコン一覧
-description: dashboard の天気アイコン（src/shared.liquid は dashboard へのリンク）の見本
+description: 天気アイコンの見本
 refresh_interval: 1440

@@ -5,7 +5,7 @@ dark_mode: 'no'
 static_data: ''
 framework_version: latest
 name: 日本語フォント実機比較
-description: 実機で日本語フォント・太さ・1-bit/2-bit を見比べるためのテスト画面
+description: 日本語フォントの実機比較
 refresh_interval: 1440
 custom_fields:
 - keyname: font

@@ -6,8 +6,9 @@
 # The whole repository is mounted, so merged_plugins can point at sibling plugins, and trmnlp's
 # cache (polled data, transform output) is kept in .cache/ between runs.
 #
-# Passes TRMNL_API_KEY and environment variables prefixed with TRMNLP_ into the container, so
-# .trmnlp.yml can read them as {{ env.TRMNLP_... }}.
+# TRMNL_API_KEY is read from .trmnl-api-key at the repository root when it is not set, so the key
+# never has to be typed on the command line. TRMNL_API_KEY and environment variables prefixed with
+# TRMNLP_ are passed into the container, so .trmnlp.yml can read them as {{ env.TRMNLP_... }}.
 set -eu
 root=$(cd "$(dirname "$0")/.." && pwd)
 plugin=$(cd "${1:?usage: bin/trmnlp <plugin-dir> <trmnlp args...>}" && pwd)
@@ -17,6 +18,11 @@ case $plugin in
 esac
 shift
 image=trmnl-render
+
+if [ -z "${TRMNL_API_KEY:-}" ] && [ -f "$root/.trmnl-api-key" ]; then
+  TRMNL_API_KEY=$(tr -d '[:space:]' < "$root/.trmnl-api-key")
+  export TRMNL_API_KEY
+fi
 
 docker build -q -t "$image" "$root/docker/trmnl-render" >/dev/null
 envs=$(env | grep -oE '^(TRMNL_API_KEY|TRMNLP_[A-Za-z0-9_]*)=' | tr -d = || true)

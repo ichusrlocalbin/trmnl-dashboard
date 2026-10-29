@@ -50,11 +50,9 @@ TRMNL の端末は、サーバーから受け取った画像を表示するだ�
 
 ### 1. TRMNL の API キーを用意する
 
-TRMNL のアカウント設定で API キー（`user_` で始まる文字列）を確認します。以下の例では、環境変数 `TRMNL_API_KEY` に入れて使います。
+TRMNL のアカウント設定（https://trmnl.com/account）で **Account API key** を確認します。Device API key ではありません。
 
-```sh
-export TRMNL_API_KEY=user_xxxxxxxx
-```
+キーは、リポジトリ直下の `.trmnl-api-key` というファイルに 1 行で書いて保存します。このファイルは git の管理対象から外してあります。`bin/trmnlp` は、環境変数 `TRMNL_API_KEY` がなければこのファイルから読みます。キーをコマンドに直接書くと、シェルの履歴に残ってしまいます。
 
 ### 2. Google カレンダーを接続する
 
