@@ -1,6 +1,6 @@
 {% comment %}
-  Portrait (480×800) dashboard, laid out like kindle-wallpaper-jp: tomorrow's weather fills the top
-  half, large enough to read from across the room, with the events and the week below.
+  Landscape (800×480) dashboard. Tomorrow's weather fills the left half, large enough to read from
+  across the room, like kindle-wallpaper-jp; the events and the week are stacked on the right.
 
   weather_source and calendar_source are the plugins picked in the settings form. Each may hold the
   plugin's data or only its name (e.g. private_plugin_523418), in which case the data is looked up by
@@ -24,8 +24,6 @@
 weather_source: {{ weather_source | json | truncate: 900 }}
 calendar_source: {{ calendar_source | json | truncate: 1500 }}</pre>
 {% else %}
-{% assign rotation = trmnl.plugin_settings.custom_fields_values.rotation | default: "cw" %}
-<div class="{% if rotation != "none" %}rot {% endif %}rot--{{ rotation }}">
 <div class="dash">
   <div class="hero">
     <div class="top">
@@ -33,7 +31,7 @@ calendar_source: {{ calendar_source | json | truncate: 1500 }}</pre>
       <span class="meta">気象庁 {{ weather.reported_at | date: "%-H時" }}発表</span>
     </div>
     <div class="main">
-      {% render "weather_icon", icon: tomorrow.icon, size: 290 %}
+      {% render "weather_icon", icon: tomorrow.icon, size: 266 %}
       <div class="temps">
         <span class="k">最高</span>
         <span class="max">{{ tomorrow.temp_max | default: "-" }}<span class="deg">°</span></span>
@@ -47,6 +45,7 @@ calendar_source: {{ calendar_source | json | truncate: 1500 }}</pre>
     </div>
   </div>
 
+  <div class="side">
   <div class="events">
     <span class="h">予定:</span>
     {% comment %}
@@ -71,11 +70,11 @@ calendar_source: {{ calendar_source | json | truncate: 1500 }}</pre>
     {% for day in weather.week offset: 1 limit: 6 %}
       <div class="d">
         <span class="dow">{{ day.dow }}</span>
-        {% render "weather_icon", icon: day.icon, size: 56 %}
+        {% render "weather_icon", icon: day.icon, size: 46 %}
         <span class="tt">{{ day.temp_max | default: "-" }}/{{ day.temp_min | default: "-" }}</span>
       </div>
     {% endfor %}
   </div>
-</div>
+  </div>
 </div>
 {% endif %}
