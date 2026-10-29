@@ -189,7 +189,7 @@ open plugins/dashboard/tests/snapshots/linux/landscape-og_png.png
 |---|---|
 | jma-weather のプレビューが灰色の線だけ | まだデータを取りに行っていません。設定画面で Force Refresh を押します |
 | dashboard の天気が空で、気温が「-」 | 「天気」「予定」の選択が保存されていません。dashboard の設定画面で選び直して、保存します |
-| 予定が「予定なし」 | 選んだカレンダーに、今日以降の予定が入っているか確認します。入れた直後なら、Google Calendar プラグインの設定画面で Force Refresh を押してから、端末で Refresh now を押します |
+| 予定が「予定なし」 | 選んだカレンダーに、今日以降の予定が入っているか確認します。入れた直後なら、Google Calendar プラグインの設定画面で Force Refresh を押してから、端末の背面のボタンを押します |
 | プレイリストの Add Plugin で追加できない | Account API で追加できます（下記） |
 | 設定画面の「Updated just now. Your TRMNL shows this at its next check-in.」 | 端末は次に画面を取りに来たときに表示を変えます。すぐ見たいときは、端末の背面のボタンを押します |
 | push で `Description is too long (maximum is 35 characters)` | `settings.yml` の `description` を 35 文字以内にします |
