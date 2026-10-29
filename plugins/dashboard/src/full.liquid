@@ -25,7 +25,7 @@ weather_source: {{ weather_source | json | truncate: 900 }}
 calendar_source: {{ calendar_source | json | truncate: 1500 }}</pre>
 {% else %}
 {% assign rotation = trmnl.plugin_settings.custom_fields_values.rotation | default: "cw" %}
-<div class="{% if rotation != "none" %}rot rot--{{ rotation }}{% endif %}">
+<div class="{% if rotation != "none" %}rot {% endif %}rot--{{ rotation }}">
 <div class="dash">
   <div class="hero">
     <div class="top">
@@ -51,18 +51,17 @@ calendar_source: {{ calendar_source | json | truncate: 1500 }}</pre>
     <span class="h">予定:</span>
     {% comment %}
       A date / time / title table without rules, like kindle-wallpaper-jp. All-day events leave the
-      time blank. Events are assumed to arrive sorted by start time, as the Google Calendar API
-      returns them.
+      time blank. The TRMNL Google Calendar plugin sends events sorted by start time, each with
+      summary, all_day and start_full (e.g. 2026-10-30T12:00:00.000+09:00).
     {% endcomment %}
     {% assign dows = "日,月,火,水,木,金,土" | split: "," %}
     {% assign shown = 0 %}
     {% for event in events %}
-      {% assign start = event.start.dateTime | default: event.start.date %}
-      {% assign start_date = start | slice: 0, 10 %}
-      {% if start_date >= weather.days[0].date and shown < max_events %}
+      {% assign start_date = event.start_full | slice: 0, 10 %}
+      {% if start_date >= weather.days[0].date and event.status != "cancelled" and shown < max_events %}
         {% assign shown = shown | plus: 1 %}
         {% assign dow = start_date | date: "%w" | plus: 0 %}
-        <span class="e"><span class="date">{{ start_date | date: "%-m/%-d" }}（{{ dows[dow] }}）</span><span class="time">{% if event.start.dateTime %}{{ event.start.dateTime | date: "%-H:%M" }}{% endif %}</span><span class="title">{{ event.summary }}</span></span>
+        <span class="e"><span class="date">{{ start_date | date: "%-m/%-d" }}（{{ dows[dow] }}）</span><span class="time">{% unless event.all_day %}{{ event.start_full | date: "%-H:%M" }}{% endunless %}</span><span class="title">{{ event.summary }}</span></span>
       {% endif %}
     {% endfor %}
     {% if shown == 0 %}<span class="e">予定なし</span>{% endif %}

@@ -1,20 +1,20 @@
-# Sample events for local previews of the dashboard, in the Google Calendar API v3 shape that
-# kindle-wallpaper-jp reads (summary, start.dateTime / start.date), sorted by start time. The TRMNL
-# Google Calendar plugin's own data shape is not documented yet; replace this with a capture of the
-# real data (append ?data=true to the plugin page on TRMNL) once it is connected.
+# Sample events for local previews of the dashboard, in the shape the TRMNL Google Calendar plugin
+# sends (checked with GET /api/plugin_settings/<id>/data): summary, all_day, status and start_full,
+# sorted by start time. The real data also carries start/end ("12:00 PM"), end_full, calname,
+# location, description and background_color. How all-day events fill start_full is a guess.
 ---
 strategy: static
 name: Google Calendar (fixture)
 static_data: |
   {"events": [
-    {"summary": "過去の予定（表示されない）", "start": {"date": "2026-10-21"}},
-    {"summary": "有給休暇", "start": {"date": "2026-10-22"}},
-    {"summary": "定例ミーティング", "start": {"dateTime": "2026-10-22T10:00:00+09:00"}},
-    {"summary": "燃えるゴミ", "start": {"date": "2026-10-23"}},
-    {"summary": "顧客打ち合わせ", "start": {"dateTime": "2026-10-23T09:30:00+09:00"}},
-    {"summary": "英会話", "start": {"dateTime": "2026-10-23T19:00:00+09:00"}},
-    {"summary": "Autodesk Fusion 360 ハンズオンワークショップ", "start": {"dateTime": "2026-10-24T16:30:00+09:00"}},
-    {"summary": "プロジェクト打ち上げ飲み会", "start": {"dateTime": "2026-10-27T19:00:00+09:00"}},
-    {"summary": "歯医者", "start": {"dateTime": "2026-10-29T14:30:00+09:00"}},
-    {"summary": "ハロウィン", "start": {"date": "2026-10-31"}}
+    {"summary": "過去の予定（表示されない）", "all_day": true, "status": "confirmed", "start_full": "2026-10-21T00:00:00.000+09:00", "date_time": "2026-10-21T00:00:00.000+09:00"},
+    {"summary": "有給休暇", "all_day": true, "status": "confirmed", "start_full": "2026-10-22T00:00:00.000+09:00", "date_time": "2026-10-22T00:00:00.000+09:00"},
+    {"summary": "定例ミーティング", "all_day": false, "status": "confirmed", "start_full": "2026-10-22T10:00:00.000+09:00", "date_time": "2026-10-22T10:00:00.000+09:00"},
+    {"summary": "燃えるゴミ", "all_day": true, "status": "confirmed", "start_full": "2026-10-23T00:00:00.000+09:00", "date_time": "2026-10-23T00:00:00.000+09:00"},
+    {"summary": "顧客打ち合わせ", "all_day": false, "status": "confirmed", "start_full": "2026-10-23T09:30:00.000+09:00", "date_time": "2026-10-23T09:30:00.000+09:00"},
+    {"summary": "英会話", "all_day": false, "status": "confirmed", "start_full": "2026-10-23T19:00:00.000+09:00", "date_time": "2026-10-23T19:00:00.000+09:00"},
+    {"summary": "Autodesk Fusion 360 ハンズオンワークショップ", "all_day": false, "status": "confirmed", "start_full": "2026-10-24T16:30:00.000+09:00", "date_time": "2026-10-24T16:30:00.000+09:00"},
+    {"summary": "プロジェクト打ち上げ飲み会", "all_day": false, "status": "confirmed", "start_full": "2026-10-27T19:00:00.000+09:00", "date_time": "2026-10-27T19:00:00.000+09:00"},
+    {"summary": "歯医者", "all_day": false, "status": "confirmed", "start_full": "2026-10-29T14:30:00.000+09:00", "date_time": "2026-10-29T14:30:00.000+09:00"},
+    {"summary": "ハロウィン", "all_day": true, "status": "confirmed", "start_full": "2026-10-31T00:00:00.000+09:00", "date_time": "2026-10-31T00:00:00.000+09:00"}
   ]}
