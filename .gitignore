@@ -1,3 +1,4 @@
 .cache/
 docker/trmnl-render/extra-ca/*.crt
 .trmnl-api-key
+tmp/
