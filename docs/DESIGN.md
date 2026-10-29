@@ -11,23 +11,18 @@
 
 TRMNL の端末は、受け取った画像を表示するだけの装置。HTML・SVG・フォントを自分では描画できない。そのため、どの方式でも最終的には誰かが画像を作る必要がある。本プロジェクトでは、その画像を **TRMNL のサーバーに作らせる**。
 
-```
-                      TRMNL のサーバー
-┌──────────────────────────────────────────────────────────────┐
-│                                                              │
-│  [Google Calendar プラグイン] ─────────────┐   公式・非表示   │
-│      OAuth で予定を取得                    │                 │
-│                                            ▼                 │
-│  [jma-weather] ──────────────────► [dashboard]               │
-│      Private Plugin・非表示            Private Plugin         │
-│      Polling で気象庁 JSON を取得     Plugin Merge で         │
-│      transform で整形                 上の 2 つを受け取り、    │
-│                                       Liquid で描画           │
-│                                            │                 │
-│                    Firefox で描画 → 1-bit/2-bit PNG          │
-└────────────────────────────────────────────┼─────────────────┘
-                                             ▼
-                                     TRMNL OG（表示するだけ）
+```mermaid
+flowchart LR
+  subgraph server["TRMNL のサーバー"]
+    gcal["Google Calendar<br>公式・非表示<br>OAuth で予定を取得"]
+    jma["jma-weather<br>Private Plugin・非表示<br>Polling で気象庁 JSON を取得<br>transform で整形"]
+    dash["dashboard<br>Private Plugin<br>Plugin Merge で 2 つのデータを受け取り、<br>Liquid で描画"]
+    render["Firefox で描画<br>→ 1-bit / 2-bit PNG"]
+    gcal --> dash
+    jma --> dash
+    dash --> render
+  end
+  render --> og["TRMNL OG<br>（表示するだけ）"]
 ```
 
 - **自前のサーバーも、画像の置き場所も要らない**。用意するのは、TRMNL に登録するテンプレートと設定だけ
