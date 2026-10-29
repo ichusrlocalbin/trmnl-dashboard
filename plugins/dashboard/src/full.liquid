@@ -24,6 +24,8 @@
 weather_source: {{ weather_source | json | truncate: 900 }}
 calendar_source: {{ calendar_source | json | truncate: 1500 }}</pre>
 {% else %}
+{% assign rotation = trmnl.plugin_settings.custom_fields_values.rotation | default: "cw" %}
+<div class="{% if rotation != "none" %}rot rot--{{ rotation }}{% endif %}">
 <div class="dash">
   <div class="hero">
     <div class="top">
@@ -75,5 +77,6 @@ calendar_source: {{ calendar_source | json | truncate: 1500 }}</pre>
       </div>
     {% endfor %}
   </div>
+</div>
 </div>
 {% endif %}

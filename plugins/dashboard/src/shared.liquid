@@ -10,6 +10,10 @@
 <style>
   .dash { position: relative; width: 100%; height: 100%; padding: 16px 30px 16px 20px; box-sizing: border-box; display: flex; flex-direction: column; color: #000; font-family: 'BIZ UDPGothic', 'Inter Variable', 'Inter', sans-serif; }
   .dash .b { font-weight: 700; }
+  /* The 480×800 portrait screen, turned to fill an 800×480 landscape panel hung on its side. */
+  .rot { position: absolute; top: 0; left: 0; width: 480px; height: 800px; transform-origin: top left; }
+  .rot--cw { transform: translate(800px, 0) rotate(90deg); }
+  .rot--ccw { transform: translate(0, 480px) rotate(-90deg); }
   .dash .hero { display: flex; flex-direction: column; padding-bottom: 6px; }
   .dash .hero .top { display: flex; justify-content: space-between; align-items: baseline; }
   .dash .hero .day { font-size: 34px; font-weight: 700; }

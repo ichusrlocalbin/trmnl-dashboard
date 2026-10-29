@@ -24,6 +24,16 @@ custom_fields:
   name: 予定
   plugin_keyname: google_calendar
   description: Google Calendar プラグインを選ぶ
+- keyname: rotation
+  field_type: select
+  name: 画面の回転
+  description: 横向きの端末を縦に掛けるときに、縦向きの画面を回転させて描く
+  options:
+  - 右回り（90 度）: cw
+  - 左回り（90 度）: ccw
+  - 回転しない（縦向きに対応した端末）: none
+  default: cw
+  optional: true
 - keyname: debug
   field_type: select
   name: デバッグ表示
