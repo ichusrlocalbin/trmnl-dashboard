@@ -2,11 +2,18 @@
   Portrait (480×800) dashboard, laid out like kindle-wallpaper-jp: tomorrow's weather fills the top
   half, large enough to read from across the room, with the events and the week below.
 
-  weather_source and calendar_source are the plugins picked in the settings form. trmnlp nests their
-  data under merge_variables, while TRMNL's docs show it at the top level, so both are accepted.
+  weather_source and calendar_source are the plugins picked in the settings form. Each may hold the
+  plugin's data or only its name (e.g. private_plugin_523418), in which case the data is looked up by
+  that name. A private plugin's data sits under merge_variables; a native plugin's at the top level.
 {% endcomment %}
-{% assign weather = weather_source.merge_variables | default: weather_source %}
-{% assign calendar = calendar_source.merge_variables | default: calendar_source %}
+{% assign weather = weather_source %}
+{% assign kind = weather_source | json | slice: 0 %}
+{% if kind == '"' %}{% assign weather = [weather_source] %}{% endif %}
+{% if weather.merge_variables %}{% assign weather = weather.merge_variables %}{% endif %}
+{% assign calendar = calendar_source %}
+{% assign kind = calendar_source | json | slice: 0 %}
+{% if kind == '"' %}{% assign calendar = [calendar_source] %}{% endif %}
+{% if calendar.merge_variables %}{% assign calendar = calendar.merge_variables %}{% endif %}
 {% assign events = calendar.events %}
 {% assign max_events = 5 %}
 {% assign tomorrow = weather.days[1] %}
