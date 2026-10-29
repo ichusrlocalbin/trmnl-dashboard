@@ -15,18 +15,18 @@
 
 TRMNL の端末は、サーバーから受け取った画像を表示するだけです。画面の HTML は TRMNL のサーバーが描画し、画像にして端末へ送ります。このリポジトリにあるのは、TRMNL に登録する Private Plugin（Liquid テンプレートと設定）です。
 
-```
-                       TRMNL のサーバー
-┌──────────────────────────────────────────────────────────┐
-│  Google Calendar（公式プラグイン）──────┐  プレイリストで非表示 │
-│                                          ▼                │
-│  jma-weather（Private Plugin）──────► dashboard（Private Plugin）│
-│    気象庁の予報 JSON を取得し、          2 つのデータを受け取り │
-│    transform で整形する                  （Plugin Merge）、     │
-│    プレイリストで非表示                  画面を描く            │
-└──────────────────────────────────────────┼───────────────┘
-                                           ▼  PNG（1-bit / 2-bit）
-                                       TRMNL OG（横向き）
+```mermaid
+flowchart LR
+  subgraph server["TRMNL のサーバー"]
+    gcal["Google Calendar<br>（公式プラグイン・非表示）"]
+    jma["jma-weather<br>（Private Plugin・非表示）<br>気象庁の予報 JSON を取得し、<br>transform で整形する"]
+    dash["dashboard<br>（Private Plugin）<br>2 つのデータを Plugin Merge で<br>受け取り、画面を描く"]
+    gcal --> dash
+    jma --> dash
+  end
+  google[("Google カレンダー")] --> gcal
+  jmaapi[("気象庁")] --> jma
+  dash -- "PNG（1-bit / 2-bit）" --> og["TRMNL OG<br>（横向き）"]
 ```
 
 | ディレクトリ | 内容 |
@@ -48,7 +48,7 @@ TRMNL の端末は、サーバーから受け取った画像を表示するだ�
 
 ## 使い方
 
-TRMNL の初期設定（Wi-Fi への接続とアカウント登録）が終わり、端末に「こんにちは、〇〇さん」と表示された状態から始めます。設定は、パソコンのブラウザで TRMNL の Web 管理画面（https://trmnl.com）から行います。
+TRMNL の初期設定（Wi-Fi への接続とアカウント登録）が終わり、端末に「こんにちは、〇〇さん」と表示された状態から始めます。設定は、パソコンのブラウザで [TRMNL の Web 管理画面](https://trmnl.com)から行います。
 
 ### 1. 事前に確認する
 
@@ -57,7 +57,7 @@ TRMNL の初期設定（Wi-Fi への接続とアカウント登録）が終わ�
 
 ### 2. TRMNL の API キーを用意する
 
-アカウント設定（https://trmnl.com/account）で **Account API key** を確認します。プラグインの登録に使います。同じ画面にある Device API key は、端末が画面を取りに来るためのもので、ここでは使いません。
+[アカウント設定](https://trmnl.com/account)で **Account API key** を確認します。プラグインの登録に使います。同じ画面にある Device API key は、端末が画面を取りに来るためのもので、ここでは使いません。
 
 キーは、リポジトリ直下の `.trmnl-api-key` というファイルに 1 行で書いて保存します。テキストエディタで作ってください。
 
@@ -218,7 +218,7 @@ curl -s -X POST -H "Authorization: Bearer $KEY" -H 'Content-Type: application/js
   -d '{"action_type": "hide", "playlist_item_ids": [<項目の id>]}' https://trmnl.com/api/devices/<端末の id>/playlist_items/bulk
 ```
 
-API の一覧は https://trmnl.com/api-docs にあります。
+API の一覧は [TRMNL API Docs](https://trmnl.com/api-docs) にあります。
 
 ## 注意
 
