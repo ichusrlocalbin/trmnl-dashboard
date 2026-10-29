@@ -148,7 +148,7 @@ Private Plugin は、データの取得方法（strategy）を 1 つしか選べ
 
 ### 予定：公式 Google Calendar プラグイン
 
-- TRMNL の画面から Google アカウントに接続し、表示するカレンダーを選ぶ（複数でもよい）。レイアウトは Week にし、プレイリストでは非表示にする
+- TRMNL の画面から Google アカウントに接続し、表示するカレンダーを選ぶ（複数でもよい）。レイアウトは Month にし（6 週間先まで取れる）、プレイリストでは非表示にする
 - `dashboard` 側では、設定画面の `calendar_source`（`plugin_instance_select`）で選んだプラグインのデータを受け取る。値がデータではなくプラグインの名前（例：`google_calendar_523434`）で届くこともあるので、そのときは名前で引き直す
 - データの形はドキュメントに書かれていないため、Account API（`/api/plugin_settings/<id>/data`）で実データを見て決めた
   - 予定は `events` の配列で、開始時刻の順に並ぶ
