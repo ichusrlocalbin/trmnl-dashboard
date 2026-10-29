@@ -148,10 +148,15 @@ Private Plugin は、データの取得方法（strategy）を 1 つしか選べ
 
 ### 予定：公式 Google Calendar プラグイン
 
-- TRMNL の画面から Google アカウントに接続し、対象のカレンダーを 1 つ選ぶ。プレイリストでは非表示にする
-- `dashboard` 側では `google_calendar_<id>` という変数でデータを受け取る
-- **データの中身（フィールド名、終日予定の表し方、タイムゾーン）はドキュメントに書かれていない**。接続した後に `?data=true` で実データを見てから、テンプレートを書く
-- 今日と明日の分を抜き出し、終日の予定を先に並べる。入りきらない分は「他 N 件」と表示する
+- TRMNL の画面から Google アカウントに接続し、表示するカレンダーを選ぶ（複数でもよい）。レイアウトは Week にし、プレイリストでは非表示にする
+- `dashboard` 側では、設定画面の `calendar_source`（`plugin_instance_select`）で選んだプラグインのデータを受け取る。値がデータではなくプラグインの名前（例：`google_calendar_523434`）で届くこともあるので、そのときは名前で引き直す
+- データの形はドキュメントに書かれていないため、Account API（`/api/plugin_settings/<id>/data`）で実データを見て決めた
+  - 予定は `events` の配列で、開始時刻の順に並ぶ
+  - 各予定は `summary`、`all_day`、`start_full`（例：`2026-10-30T12:00:00.000+09:00`、カレンダーのタイムゾーン付き）、`status` などを持つ。ほかに `start`（`12:00 PM`）、`end_full`、`calname`、`location`、`description` もある
+  - 全体には `tz`（例：`Asia/Tokyo`）と `today_in_tz` が付く
+- 渡される範囲はレイアウトで決まる。Week で週を固定すると、今週（週の始まりの曜日から 7 日）の分だけになる
+- 表示は、今日以降で取り消されていない（`status` が `cancelled` でない）予定を、届いた順に最大 5 件。日付・時刻・予定名の表にし、終日の予定は時刻を空欄にする。入りきらない分は表示しない
+- ローカルのプレビューでは、同じ形のサンプル（`plugins/dashboard/fixtures/google-calendar`）を使う
 
 ## 4. リポジトリ構成
 
