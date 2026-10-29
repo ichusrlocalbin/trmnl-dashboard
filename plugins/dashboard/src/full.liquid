@@ -11,6 +11,12 @@
 {% assign max_events = 5 %}
 {% assign tomorrow = weather.days[1] %}
 
+{% if trmnl.plugin_settings.custom_fields_values.debug == "yes" %}
+  {% comment %} Shows what the merged plugins actually hand over, to fit the template to it. {% endcomment %}
+  <pre style="font-size: 10px; white-space: pre-wrap; word-break: break-all; margin: 8px;">settings: {{ trmnl.plugin_settings.custom_fields_values | json }}
+weather_source: {{ weather_source | json | truncate: 900 }}
+calendar_source: {{ calendar_source | json | truncate: 1500 }}</pre>
+{% else %}
 <div class="dash">
   <div class="hero">
     <div class="top">
@@ -63,3 +69,4 @@
     {% endfor %}
   </div>
 </div>
+{% endif %}

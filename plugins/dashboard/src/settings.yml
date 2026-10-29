@@ -24,6 +24,15 @@ custom_fields:
   name: 予定
   plugin_keyname: google_calendar
   description: Google Calendar プラグインを選ぶ
+- keyname: debug
+  field_type: select
+  name: デバッグ表示
+  description: 受け取ったデータをそのまま表示する（データの形の確認用）
+  options:
+  - しない: 'no'
+  - する: 'yes'
+  default: 'no'
+  optional: true
 name: 天気と予定
 description: 明日の天気と予定を縦向きで表示
 refresh_interval: 60
