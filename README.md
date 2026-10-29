@@ -68,6 +68,8 @@ bin/trmnlp plugins/jma-weather push
 
 TRMNL に Private Plugin が作られます。
 
+> **このリポジトリを fork して使う場合**：`plugins/*/src/settings.yml` に作者の TRMNL のプラグイン ID（`id:` の行）が入っています。最初の `push` の前に、その行を消してください。消さないと、他人のプラグインを更新しようとして失敗します。
+
 1. `plugins/jma-weather/src/settings.yml` に、TRMNL から割り当てられた `id` が書き込まれます。手元に残しておきます
 2. TRMNL 上でこのプラグインをプレイリストに追加し、**非表示**にします
 

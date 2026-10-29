@@ -1,13 +1,18 @@
 ---
 strategy: polling
-polling_verb: get
-polling_url: https://www.jma.go.jp/bosai/forecast/data/forecast/130000.json
-polling_headers: ''
-serverless_language: node
 no_screen_padding: 'no'
 dark_mode: 'no'
 static_data: ''
+polling_verb: get
 framework_version: latest
+serverless_language: node
+refresh_interval_floor:
+polling_url: https://www.jma.go.jp/bosai/forecast/data/forecast/130000.json
+polling_headers:
+polling_body:
+id: 523418
+oauth_enabled: 'false'
+oauth_pkce_enabled: 'no'
 name: 気象庁 天気（東京）
 description: 気象庁の天気予報（dashboard 用・非表示）
 refresh_interval: 60
