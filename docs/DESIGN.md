@@ -193,10 +193,15 @@ trmnl-dashboard/
 4. `dashboard`：横向きか縦向き（決めた方）のレイアウト、天気アイコン、エラー時の表示を作る
 5. 実機で、更新間隔と表示を確認する
 
-## 7. 未確認のこと
+## 7. 実機で確認したこと
 
-- 端末のプロファイル（1-bit / 2-bit）と画面の向きを、どこで切り替えるか
-- 本番の描画で Google Fonts の読み込みが間に合うか
-- Google Calendar プラグインのデータ構造
-- transform（Node）が Developer Edition で使えるか。使えない場合は、整形を Liquid で行う
-- Plugin Merge で、公式プラグインと Private Plugin を同時に参照できるか
+設計の時点で未確認だったことは、端末が届いてから次のように確かめた。
+
+| 項目 | 結果 |
+|---|---|
+| 1-bit / 2-bit の切り替え | 端末の設定で切り替える。2-bit はファームウェア 1.6.0 以上が必要。テンプレートは白黒のままでも読めるように作った |
+| 画面の向き | OG は縦向きにできない（「画面回転は現在、あなたのデバイスではサポートされていません」）。端末の設定にある Image Rotation（90 / 180 / 270 度）は、画像を回すだけ。そのため横向きのレイアウトにした |
+| 本番での Google Fonts | 実機の表示では問題なく読み込まれている。ローカルの描画（trmnlp）では、まれに白い画面になる |
+| Google Calendar のデータ | 予定は `events` の配列で、開始時刻の順に並ぶ。各予定は `summary`、`all_day`、`start_full`（例：`2026-10-30T12:00:00.000+09:00`）、`status` などを持つ。ほかに `tz` と `today_in_tz` が付く。範囲はレイアウトで決まる（Week で週を固定すると今週の分だけ） |
+| transform（Node） | Developer Edition で使える。`jma-weather` の整形は transform で行っている |
+| Plugin Merge | 公式プラグインと Private Plugin を同時に参照できる。設定画面の `plugin_instance_select` で選び、選んだ後に**保存しないとデータが渡らない**。Private Plugin のデータは `merge_variables` の下、公式プラグインのデータは直下に入る |
