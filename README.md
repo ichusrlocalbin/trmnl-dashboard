@@ -74,15 +74,18 @@ TRMNL の初期設定（Wi-Fi への接続とアカウント登録）が終わ�
 
 #### 予定を取れる範囲
 
-Google Calendar プラグインが dashboard に渡すのは、**選んだレイアウトで表示する範囲の予定だけ**です。何日先まで取るかを直接決める設定はありません（[TRMNL Help: Google Calendar](https://help.trmnl.com/en/articles/9483539-google-calendar)）。
+Google Calendar プラグインが dashboard に渡す予定の範囲は、**レイアウトで決まります**。何日先まで取るかを直接決める設定はありません。範囲は「今日の 0 時から N 日後まで」で、週の始まりの曜日や「週を固定する」設定には左右されません（[プラグインのソース](https://github.com/usetrmnl/plugins/blob/master/lib/google_calendar/google_calendar.rb) の `time_min` と `time_max`）。
 
-| レイアウト | 範囲 |
-|---|---|
-| Default | 今日から 2〜3 日 |
-| Week | 5〜7 日 |
-| Month | 今月 |
+| レイアウト | 先の範囲 | 過去の予定を含める設定にしたとき |
+|---|---|---|
+| Week、Rolling Week、Work Week | 7 日後まで | 7 日前から |
+| Default など、ほかのレイアウト | 7 日後まで | 含まれない |
+| Month、Rolling Month | 42 日後まで（6 週間） | 30 日前から |
+| Schedule | 14 日後まで（予定がなければ 21 日後まで） | 含まれない |
+| Today only | 1 日（今日だけ） | 含まれない |
 
-Week で「週を固定する」設定（データでは `fixed_week: true`）が有効だと、範囲は「今週」（週の始まりの曜日から 7 日）になるようです。そのため、週の終わりに近づくほど先の予定が減ります。たとえば週の始まりが月曜なら、日曜には日曜の予定しか出ません。先まで出したいときは、Month にするか、週を固定しない設定を試してください。
+- dashboard は今日以降の予定を近い順に最大 5 件表示します。そのため、Month にして範囲を広げても、表示が増えすぎることはありません
+- 過去の予定は表示しないので、「過去の予定を含める」設定はオフのままにします
 
 ### 4. 天気のプラグイン（jma-weather）を登録する
 

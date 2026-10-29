@@ -154,7 +154,7 @@ Private Plugin は、データの取得方法（strategy）を 1 つしか選べ
   - 予定は `events` の配列で、開始時刻の順に並ぶ
   - 各予定は `summary`、`all_day`、`start_full`（例：`2026-10-30T12:00:00.000+09:00`、カレンダーのタイムゾーン付き）、`status` などを持つ。ほかに `start`（`12:00 PM`）、`end_full`、`calname`、`location`、`description` もある
   - 全体には `tz`（例：`Asia/Tokyo`）と `today_in_tz` が付く
-- 渡される範囲はレイアウトで決まる。Week で週を固定すると、今週（週の始まりの曜日から 7 日）の分だけになる
+- 渡される範囲はレイアウトで決まる。今日の 0 時から、Week などは 7 日後まで、Month・Rolling Month は 42 日後まで、Schedule は 14 日後まで（プラグインのソース `usetrmnl/plugins` の `lib/google_calendar/google_calendar.rb` にある `time_max`）。週の始まりや「週を固定する」設定には左右されない
 - 表示は、今日以降で取り消されていない（`status` が `cancelled` でない）予定を、届いた順に最大 5 件。日付・時刻・予定名の表にし、終日の予定は時刻を空欄にする。入りきらない分は表示しない
 - ローカルのプレビューでは、同じ形のサンプル（`plugins/dashboard/fixtures/google-calendar`）を使う
 
@@ -207,6 +207,6 @@ trmnl-dashboard/
 | 1-bit / 2-bit の切り替え | 端末の設定で切り替える。2-bit はファームウェア 1.6.0 以上が必要。テンプレートは白黒のままでも読めるように作った |
 | 画面の向き | OG は縦向きにできない（「画面回転は現在、あなたのデバイスではサポートされていません」）。端末の設定にある Image Rotation（90 / 180 / 270 度）は、画像を回すだけ。そのため横向きのレイアウトにした |
 | 本番での Google Fonts | 実機の表示では問題なく読み込まれている。ローカルの描画（trmnlp）では、まれに白い画面になる |
-| Google Calendar のデータ | 予定は `events` の配列で、開始時刻の順に並ぶ。各予定は `summary`、`all_day`、`start_full`（例：`2026-10-30T12:00:00.000+09:00`）、`status` などを持つ。ほかに `tz` と `today_in_tz` が付く。範囲はレイアウトで決まる（Week で週を固定すると今週の分だけ） |
+| Google Calendar のデータ | 予定は `events` の配列で、開始時刻の順に並ぶ。各予定は `summary`、`all_day`、`start_full`（例：`2026-10-30T12:00:00.000+09:00`）、`status` などを持つ。ほかに `tz` と `today_in_tz` が付く。範囲はレイアウトで決まる（Week は 7 日後まで、Month は 42 日後まで） |
 | transform（Node） | Developer Edition で使える。`jma-weather` の整形は transform で行っている |
 | Plugin Merge | 公式プラグインと Private Plugin を同時に参照できる。設定画面の `plugin_instance_select` で選び、選んだ後に**保存しないとデータが渡らない**。Private Plugin のデータは `merge_variables` の下、公式プラグインのデータは直下に入る |
