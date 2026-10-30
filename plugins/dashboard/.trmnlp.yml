@@ -1,5 +1,8 @@
 # TRMNLP configuration
 ---
+# The user's time zone on TRMNL, for trmnl.user.utc_offset.
+time_zone: Asia/Tokyo
+
 watch:
   - .trmnlp.yml
   - src

@@ -1,7 +1,7 @@
 {% comment %}
-  Landscape (800×480) dashboard. Tomorrow's weather fills the left half, large enough to read from
-  across the room, like kindle-wallpaper-jp; the events, the next 24 hours (3-hourly) and the week
-  are stacked on the right.
+  Landscape (800×480) dashboard. The day's weather (today until 11:00, then tomorrow) fills the left
+  half, large enough to read from across the room, like kindle-wallpaper-jp; the events, the next
+  24 hours (3-hourly) and the week are stacked on the right.
 
   weather_source and calendar_source are the plugins picked in the settings form. Each may hold the
   plugin's data or only its name (e.g. private_plugin_523418), in which case the data is looked up by
@@ -17,7 +17,15 @@
 {% if calendar.merge_variables %}{% assign calendar = calendar.merge_variables %}{% endif %}
 {% assign events = calendar.events %}
 {% assign max_events = 5 %}
-{% assign tomorrow = weather.days[1] %}
+{% comment %}
+  The local time, in the user's time zone on TRMNL. date reads a number as seconds in UTC, so the
+  offset is added first.
+{% endcomment %}
+{% assign local = trmnl.system.timestamp_utc | plus: trmnl.user.utc_offset %}
+{% assign hour = local | modulo: 86400 | divided_by: 3600 %}
+{% assign today = local | date: "%Y-%m-%d" %}
+{% if hour < 11 %}{% assign hero_date = today %}{% else %}{% assign hero_date = local | plus: 86400 | date: "%Y-%m-%d" %}{% endif %}
+{% assign hero = weather.days | where: "date", hero_date | first | default: weather.days[1] %}
 
 {% if trmnl.plugin_settings.custom_fields_values.debug == "yes" %}
   {% comment %} Shows what the merged plugins actually hand over, to fit the template to it. {% endcomment %}
@@ -28,21 +36,21 @@ calendar_source: {{ calendar_source | json | truncate: 1500 }}</pre>
 <div class="dash">
   <div class="hero">
     <div class="top">
-      <span class="day">{{ tomorrow.date | date: "%-m/%-d" }}（{{ tomorrow.dow }}）</span>
+      <span class="day">{{ hero.date | date: "%-m/%-d" }}（{{ hero.dow }}）</span>
       <span class="meta">気象庁 {{ weather.reported_at | date: "%-H時" }}発表</span>
     </div>
     <div class="main">
-      {% render "weather_icon", icon: tomorrow.icon, size: 266 %}
+      {% render "weather_icon", icon: hero.icon, size: 266 %}
       <div class="temps">
         <span class="k">最高</span>
-        <span class="max">{{ tomorrow.temp_max | default: "-" }}<span class="deg">°</span></span>
+        <span class="max">{{ hero.temp_max | default: "-" }}<span class="deg">°</span></span>
         <span class="k">最低</span>
-        <span class="min">{{ tomorrow.temp_min | default: "-" }}<span class="deg">°</span></span>
+        <span class="min">{{ hero.temp_min | default: "-" }}<span class="deg">°</span></span>
       </div>
     </div>
     <div class="bottom">
-      <span class="text">{{ tomorrow.text }}</span>
-      <span class="pop">降水 {{ tomorrow.pop | default: "-" }}%</span>
+      <span class="text">{{ hero.text }}</span>
+      <span class="pop">降水 {{ hero.pop | default: "-" }}%</span>
     </div>
   </div>
 
@@ -58,7 +66,7 @@ calendar_source: {{ calendar_source | json | truncate: 1500 }}</pre>
     {% assign shown = 0 %}
     {% for event in events %}
       {% assign start_date = event.start_full | slice: 0, 10 %}
-      {% if start_date >= weather.days[0].date and event.status != "cancelled" and shown < max_events %}
+      {% if start_date >= today and event.status != "cancelled" and shown < max_events %}
         {% assign shown = shown | plus: 1 %}
         {% assign dow = start_date | date: "%w" | plus: 0 %}
         <span class="e"><span class="date">{{ start_date | date: "%-m/%-d" }}（{{ dows[dow] }}）</span><span class="time">{% unless event.all_day %}{{ event.start_full | date: "%-H:%M" }}{% endunless %}</span><span class="title">{{ event.summary }}</span></span>
