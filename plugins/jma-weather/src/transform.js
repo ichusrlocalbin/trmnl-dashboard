@@ -1,4 +1,5 @@
-// Reshapes the JMA forecast JSON (polled as { data: [threeDay, weekly] }) into what the dashboard draws.
+// Reshapes the JMA forecast JSON into what the dashboard draws. Two urls are polled, so TRMNL hands
+// them over as IDX_0 (the forecast, { data: [threeDay, weekly] }) and IDX_1 (the 3-hourly forecast).
 //
 // Icons are { base, change, to }: base and to are sunny / cloudy / rain / snow / thunder /
 // heavy_rain / heavy_snow, and change is
@@ -76,10 +77,33 @@ function labelOf(date, today) {
   return ['今日', '明日', '明後日'][diff] || ''
 }
 
+// The 3-hourly forecast (地域時系列予報): weather for the area and temperature for the city, from the
+// slot now in progress, 8 slots (24 hours).
+function hoursOf(series, now) {
+  if (!series?.areaTimeSeries || !series?.pointTimeSeries) return []
+  const area = series.areaTimeSeries
+  const point = series.pointTimeSeries
+  return area.timeDefines
+    .map((t, i) => {
+      const at = t.dateTime
+      const j = point.timeDefines.findIndex((p) => p.dateTime === at)
+      return {
+        at,
+        hour: Number(at.slice(11, 13)),
+        text: area.weather[i],
+        icon: iconFromText(area.weather[i]),
+        temp: j < 0 ? null : num(point.temperature[j])
+      }
+    })
+    .filter((h) => Date.parse(h.at) + 3 * 3600000 > now)
+    .slice(0, 8)
+}
+
 function run(input) {
+  const forecast = input.IDX_0 || input
   // A failed poll leaves no data. Returning nothing keeps TRMNL's previous data on screen.
-  if (!Array.isArray(input.data) || input.data.length < 2) return {}
-  const [threeDay, weekly] = input.data
+  if (!Array.isArray(forecast.data) || forecast.data.length < 2) return {}
+  const [threeDay, weekly] = forecast.data
   const reportedAt = threeDay.reportDatetime
   const today = dateOf(reportedAt)
   const [weatherTs, popTs, tempTs] = threeDay.timeSeries
@@ -130,5 +154,5 @@ function run(input) {
     }
   })
 
-  return { reported_at: reportedAt, area: area.area.name, days, week }
+  return { reported_at: reportedAt, area: area.area.name, days, hours: hoursOf(input.IDX_1, Date.now()), week }
 }

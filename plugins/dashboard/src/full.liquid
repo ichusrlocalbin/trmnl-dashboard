@@ -1,6 +1,7 @@
 {% comment %}
   Landscape (800×480) dashboard. Tomorrow's weather fills the left half, large enough to read from
-  across the room, like kindle-wallpaper-jp; the events and the week are stacked on the right.
+  across the room, like kindle-wallpaper-jp; the events, the next 24 hours (3-hourly) and the week
+  are stacked on the right.
 
   weather_source and calendar_source are the plugins picked in the settings form. Each may hold the
   plugin's data or only its name (e.g. private_plugin_523418), in which case the data is looked up by
@@ -64,6 +65,16 @@ calendar_source: {{ calendar_source | json | truncate: 1500 }}</pre>
       {% endif %}
     {% endfor %}
     {% if shown == 0 %}<span class="e">予定なし</span>{% endif %}
+  </div>
+
+  <div class="hours">
+    {% for slot in weather.hours %}
+      <div class="s">
+        <span class="hh">{{ slot.hour }}時</span>
+        {% render "weather_icon", icon: slot.icon, size: 32 %}
+        <span class="ht">{{ slot.temp | default: "-" }}°</span>
+      </div>
+    {% endfor %}
   </div>
 
   <div class="week">

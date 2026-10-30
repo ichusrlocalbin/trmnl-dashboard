@@ -7,7 +7,9 @@ polling_verb: get
 framework_version: latest
 serverless_language: node
 refresh_interval_floor:
-polling_url: https://www.jma.go.jp/bosai/forecast/data/forecast/130000.json
+polling_url: |-
+  https://www.jma.go.jp/bosai/forecast/data/forecast/130000.json
+  https://www.jma.go.jp/bosai/jmatile/data/wdist/VPFD/130010.json
 polling_headers:
 polling_body:
 id: 523418
